@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="${relativePackage}.${activityClass}">
 
 
@@ -11,7 +12,23 @@
             android:layout_height="match_parent">
 
     </com.huan.background.view.FloatingBackgroundView>
-
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor="@android:color/black"
+            android:text="@string/simple_title"
+            android:gravity="center"
+            android:id="@+id/textView" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+            android:layout_marginTop="46dp"/>
+    <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="#3F71B1"
+            android:text="@string/button_on"
+            android:gravity="center"
+            android:id="@+id/button" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+            android:layout_marginBottom="79dp"/>
 
 
 </RelativeLayout>
