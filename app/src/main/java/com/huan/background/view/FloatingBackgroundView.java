@@ -2,6 +2,7 @@ package com.huan.background.view;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.*;
@@ -38,7 +39,8 @@ public class FloatingBackgroundView extends RelativeLayout {
     private void initView(Context context) {
 
         mRootView = LayoutInflater.from(context).inflate(R.layout.view_floating_background, null);
-
+        //At first should be invisible
+        mRootView.setVisibility(INVISIBLE);
         initFloatingWindow(context);
 
     }
@@ -56,7 +58,7 @@ public class FloatingBackgroundView extends RelativeLayout {
         if(Build.VERSION.SDK_INT>=19){
             wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
 
-            //设置Window flag
+            //set Window flag
             wmParams.flags =
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                             | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -64,18 +66,15 @@ public class FloatingBackgroundView extends RelativeLayout {
         }
         else {
             wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
-                    | WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY; // 设置window type
-            //设置Window flag
-            wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+            wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                     | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
         }
 
-        // 设置图片格式，效果为背景透明
         wmParams.format = PixelFormat.TRANSPARENT;
         wmParams.gravity = Gravity.LEFT | Gravity.TOP;
 
-        //坐标
         wmParams.x = 0;
         wmParams.y = 0;
 
@@ -89,5 +88,30 @@ public class FloatingBackgroundView extends RelativeLayout {
 
         mWindowsManager.addView(mRootView,wmParams);
 
+    }
+
+
+    /**
+     * Change background's color
+     * @param colorVal color value
+     */
+    public void changeBackgroundColor(int colorVal){
+
+    }
+
+    /**
+     * turn on Background
+     */
+    public void turnOn(){
+
+        mRootView.setVisibility(VISIBLE);
+    }
+
+    /**
+     * turn off Background
+     */
+    public void turnOff(){
+
+        mRootView.setVisibility(INVISIBLE);
     }
 }
