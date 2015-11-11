@@ -7,7 +7,7 @@
 
 
     <com.huan.background.view.FloatingBackgroundView
-            android:id="@+id/floatingView"
+            android:id="@+id/floatingBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -19,7 +19,7 @@
             android:textColor="@android:color/black"
             android:text="@string/simple_title"
             android:gravity="center"
-            android:id="@+id/textView" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+            android:id="@+id/textViewSimpleTitle" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
             android:layout_marginTop="46dp"/>
     <Button
             android:layout_width="150dp"
@@ -27,7 +27,7 @@
             android:background="#3F71B1"
             android:text="@string/button_on"
             android:gravity="center"
-            android:id="@+id/button" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+            android:id="@+id/buttonStartFloatingBackground" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
             android:layout_marginBottom="79dp"/>
 
 

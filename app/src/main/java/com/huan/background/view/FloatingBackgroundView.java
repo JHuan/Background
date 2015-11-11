@@ -45,6 +45,7 @@ public class FloatingBackgroundView extends RelativeLayout {
 
     }
 
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
@@ -114,4 +115,14 @@ public class FloatingBackgroundView extends RelativeLayout {
 
         mRootView.setVisibility(INVISIBLE);
     }
+
+
+    /**
+     * Floating background is On?
+     * @return
+     */
+    public boolean isOn(){
+        return mRootView.getVisibility()==VISIBLE;
+    }
+
 }
