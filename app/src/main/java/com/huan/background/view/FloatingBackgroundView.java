@@ -18,6 +18,7 @@ public class FloatingBackgroundView extends RelativeLayout {
     private WindowManager                   mWindowsManager;
     private View                            mRootView;
     WindowManager.LayoutParams              wmParams;
+    
 
     public FloatingBackgroundView(Context context) {
         super(context);
@@ -77,7 +78,7 @@ public class FloatingBackgroundView extends RelativeLayout {
         wmParams.gravity = Gravity.LEFT | Gravity.TOP;
 
         wmParams.x = 0;
-        wmParams.y = 0;
+        wmParams.y = 0 - getStatusBarHeight(context);
 
 
         Display currentDisplay = mWindowsManager.getDefaultDisplay();
@@ -124,5 +125,20 @@ public class FloatingBackgroundView extends RelativeLayout {
     public boolean isOn(){
         return mRootView.getVisibility()==VISIBLE;
     }
+
+    /**
+     * Get the status bar's height
+     * @param context
+     * @return
+     */
+    private int getStatusBarHeight(Context context){
+        int statusBarHeight=0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return statusBarHeight;
+    }
+
 
 }

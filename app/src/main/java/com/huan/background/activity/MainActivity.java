@@ -30,7 +30,6 @@ public class MainActivity extends Activity {
 
                 mFloatingBackgroundView.turnOn();
                 Intent i= new Intent(Intent.ACTION_MAIN);
-                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.addCategory(Intent.CATEGORY_HOME);
                 startActivity(i);
             }
