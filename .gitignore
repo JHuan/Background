@@ -6,3 +6,5 @@
 /build
 gradlew.bat
 gradlew
+*.name
+gradle.properties
