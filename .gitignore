@@ -8,3 +8,7 @@ gradlew.bat
 gradlew
 *.name
 gradle.properties
+.idea
+*.iml
+gradle
+app.iml

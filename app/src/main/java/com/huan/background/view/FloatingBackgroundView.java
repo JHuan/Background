@@ -6,8 +6,10 @@ import android.graphics.Point;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.*;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.huan.background.R;
+import com.huan.background.activity.MainActivity;
 
 /**
  * 悬浮窗背景
@@ -18,6 +20,8 @@ public class FloatingBackgroundView extends RelativeLayout {
     private WindowManager                   mWindowsManager;
     private View                            mRootView;
     WindowManager.LayoutParams              wmParams;
+
+    private ImageView                       mImageBackGround;
     
 
     public FloatingBackgroundView(Context context) {
@@ -40,6 +44,10 @@ public class FloatingBackgroundView extends RelativeLayout {
     private void initView(Context context) {
 
         mRootView = LayoutInflater.from(context).inflate(R.layout.view_floating_background, null);
+        mImageBackGround = (ImageView) mRootView.findViewById(R.id.imageBackGround);
+
+        mImageBackGround.setAlpha(MainActivity.DEAFAULT_ALAPHA);
+
         //At first should be invisible
         mRootView.setVisibility(INVISIBLE);
         initFloatingWindow(context);
@@ -94,11 +102,11 @@ public class FloatingBackgroundView extends RelativeLayout {
 
 
     /**
-     * Change background's color
-     * @param colorVal color value
+     * Change background's drawable
+     * @param drawableResID Resource ID of drawable
      */
-    public void changeBackgroundColor(int colorVal){
-
+    public void changeBackgroundDrawable(int drawableResID){
+        mImageBackGround.setImageResource(drawableResID);
     }
 
     /**

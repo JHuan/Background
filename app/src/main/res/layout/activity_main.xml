@@ -6,12 +6,19 @@
     tools:context="${relativePackage}.${activityClass}">
 
 
+    <com.jfeinstein.jazzyviewpager.JazzyViewPager
+        android:id="@+id/jazzy_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.huan.background.view.FloatingBackgroundView
             android:id="@+id/floatingBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
     </com.huan.background.view.FloatingBackgroundView>
+
+
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,9 +30,11 @@
             android:layout_marginTop="46dp"/>
     <Button
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="#3F71B1"
             android:text="@string/button_on"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
             android:gravity="center"
             android:id="@+id/buttonStartFloatingBackground" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
             android:layout_marginBottom="79dp"/>
