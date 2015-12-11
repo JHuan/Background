@@ -1,8 +1,13 @@
 package com.huan.background.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -16,6 +21,9 @@ import java.util.Arrays;
 
 public class MainActivity extends Activity {
 
+    private static final String TAG = "MainActivity";
+    private static final String BCAST_CONFIGCHANGED = "android.intent.action.CONFIGURATION_CHANGED";
+
     private final static int[] BACKDROUND_DRAWABLE_ID =
             new int[]{R.drawable.background,R.drawable.background2,R.drawable.background3,R.drawable.background4};
 
@@ -27,6 +35,9 @@ public class MainActivity extends Activity {
 
     private     JazzyViewPager          mJazzy;
     private     MainAdapter             mAdapter;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,5 +79,11 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         mFloatingBackgroundView.turnOff();
+
     }
+
+    protected void onDestroy(){
+        super.onDestroy();
+    }
+
 }

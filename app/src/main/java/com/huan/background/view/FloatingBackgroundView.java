@@ -1,10 +1,15 @@
 package com.huan.background.view;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,16 +17,24 @@ import com.huan.background.R;
 import com.huan.background.activity.MainActivity;
 
 /**
- * 悬浮窗背景
+ * Floating background view!
  * Created by barryjiang on 2015/10/30.
  */
 public class FloatingBackgroundView extends RelativeLayout {
 
+    private static final String             TAG = "FloatingBackgroundView";
+    private static final String             BCAST_CONFIGCHANGED = "android.intent.action.CONFIGURATION_CHANGED";
+
     private WindowManager                   mWindowsManager;
     private View                            mRootView;
-    WindowManager.LayoutParams              wmParams;
+    private WindowManager.LayoutParams      wmParams;
 
     private ImageView                       mImageBackGround;
+
+    private Context                         mContext;
+    private int                             mCurrentOrientation;
+    private int                             mCurrentScreenWidth;
+    private int                             mCurrentScreenHeight;
     
 
     public FloatingBackgroundView(Context context) {
@@ -43,6 +56,8 @@ public class FloatingBackgroundView extends RelativeLayout {
 
     private void initView(Context context) {
 
+        mContext = context;
+
         mRootView = LayoutInflater.from(context).inflate(R.layout.view_floating_background, null);
         mImageBackGround = (ImageView) mRootView.findViewById(R.id.imageBackGround);
 
@@ -51,6 +66,12 @@ public class FloatingBackgroundView extends RelativeLayout {
         //At first should be invisible
         mRootView.setVisibility(INVISIBLE);
         initFloatingWindow(context);
+
+        mCurrentOrientation = context.getResources().getConfiguration().orientation;
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BCAST_CONFIGCHANGED);
+        mContext.registerReceiver(mBroadcastReceiver, filter);
 
     }
 
@@ -93,6 +114,9 @@ public class FloatingBackgroundView extends RelativeLayout {
         int screenWidth = currentDisplay.getWidth();
         int screenHeight = currentDisplay.getHeight();
 
+        mCurrentScreenWidth = screenWidth;
+        mCurrentScreenHeight = screenHeight;
+
         wmParams.width = screenWidth;
         wmParams.height = screenHeight;
 
@@ -113,7 +137,7 @@ public class FloatingBackgroundView extends RelativeLayout {
      * turn on Background
      */
     public void turnOn(){
-
+        //register a configuration listener
         mRootView.setVisibility(VISIBLE);
     }
 
@@ -123,6 +147,19 @@ public class FloatingBackgroundView extends RelativeLayout {
     public void turnOff(){
 
         mRootView.setVisibility(INVISIBLE);
+    }
+
+    /**
+     *  Change the background view's size
+     * @param width
+     * @param height
+     */
+    private void setBackgroundSize(int width,int height){
+        if(wmParams!=null && mWindowsManager!=null){
+            wmParams.width = width;
+            wmParams.height = height;
+            mWindowsManager.updateViewLayout(mRootView,wmParams);
+        }
     }
 
 
@@ -148,5 +185,32 @@ public class FloatingBackgroundView extends RelativeLayout {
         return statusBarHeight;
     }
 
+    /**
+     *  Must call it when activity finishs
+     */
+    public void release(){
+        mContext.unregisterReceiver(mBroadcastReceiver);
+    }
+
+
+    public BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent myIntent) {
+
+            if ( myIntent.getAction().equals( BCAST_CONFIGCHANGED ) ) {
+
+                Log.d(TAG, "received->" + BCAST_CONFIGCHANGED);
+
+                int current = getResources().getConfiguration().orientation;
+                if(current == mCurrentOrientation){
+                   Log.d(TAG,"Need not change! XD");
+                }
+                else {
+                    setBackgroundSize(wmParams.height,wmParams.width);
+                    mCurrentOrientation = current;
+                }
+            }
+        }
+    };
 
 }
