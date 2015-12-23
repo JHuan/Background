@@ -4,9 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
 import android.graphics.PixelFormat;
-import android.graphics.Point;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -23,7 +21,7 @@ import com.huan.background.activity.MainActivity;
 public class FloatingBackgroundView extends RelativeLayout {
 
     private static final String             TAG = "FloatingBackgroundView";
-    private static final String             BCAST_CONFIGCHANGED = "android.intent.action.CONFIGURATION_CHANGED";
+
 
     private WindowManager                   mWindowsManager;
     private View                            mRootView;
@@ -66,12 +64,6 @@ public class FloatingBackgroundView extends RelativeLayout {
         //At first should be invisible
         mRootView.setVisibility(INVISIBLE);
         initFloatingWindow(context);
-
-        mCurrentOrientation = context.getResources().getConfiguration().orientation;
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(BCAST_CONFIGCHANGED);
-        mContext.registerReceiver(mBroadcastReceiver, filter);
 
     }
 
@@ -154,7 +146,7 @@ public class FloatingBackgroundView extends RelativeLayout {
      * @param width
      * @param height
      */
-    private void setBackgroundSize(int width,int height){
+    public void setBackgroundSize(int width,int height){
         if(wmParams!=null && mWindowsManager!=null){
             wmParams.width = width;
             wmParams.height = height;
@@ -185,32 +177,6 @@ public class FloatingBackgroundView extends RelativeLayout {
         return statusBarHeight;
     }
 
-    /**
-     *  Must call it when activity finishs
-     */
-    public void release(){
-        mContext.unregisterReceiver(mBroadcastReceiver);
-    }
 
-
-    public BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent myIntent) {
-
-            if ( myIntent.getAction().equals( BCAST_CONFIGCHANGED ) ) {
-
-                Log.d(TAG, "received->" + BCAST_CONFIGCHANGED);
-
-                int current = getResources().getConfiguration().orientation;
-                if(current == mCurrentOrientation){
-                   Log.d(TAG,"Need not change! XD");
-                }
-                else {
-                    setBackgroundSize(wmParams.height,wmParams.width);
-                    mCurrentOrientation = current;
-                }
-            }
-        }
-    };
 
 }

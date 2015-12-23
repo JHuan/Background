@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.huan.background.R;
 import com.huan.background.adapter.MainAdapter;
+import com.huan.background.service.BackGroundService;
 import com.huan.background.view.FloatingBackgroundView;
 import com.jfeinstein.jazzyviewpager.JazzyViewPager;
 
@@ -31,8 +32,6 @@ public class MainActivity extends Activity {
 
     private     Button                  mbtnStart;
 
-    private     FloatingBackgroundView  mFloatingBackgroundView;
-
     private     JazzyViewPager          mJazzy;
     private     MainAdapter             mAdapter;
 
@@ -44,7 +43,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-        mFloatingBackgroundView = (FloatingBackgroundView)findViewById(R.id.floatingBackground);
+        //mFloatingBackgroundView = (FloatingBackgroundView)findViewById(R.id.floatingBackground);
 
         mbtnStart = (Button) findViewById(R.id.buttonStartFloatingBackground);
         mbtnStart.setOnClickListener(new View.OnClickListener() {
@@ -52,14 +51,22 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
 
                 int resId = mAdapter.getCurrentDrawResID();
-                mFloatingBackgroundView.changeBackgroundDrawable(resId);
-                mFloatingBackgroundView.turnOn();
-                Intent i= new Intent(Intent.ACTION_MAIN);
+                Intent intent = new Intent();
+                intent.setAction(BackGroundService.BROADCAST_CHANGE_BACKGROUND);
+                intent.putExtra(BackGroundService.INTENT_KEY_BACKGROUND_DRAW_ID, resId);
+                sendBroadcast(intent);
+
+                intent.setAction(BackGroundService.BROADCAST_TURN_ON_BACKGROUND);
+                sendBroadcast(intent);
+                Intent i = new Intent(Intent.ACTION_MAIN);
                 i.addCategory(Intent.CATEGORY_HOME);
                 startActivity(i);
             }
         });
 
+        Intent intent = new Intent();
+        intent.setClass(this,BackGroundService.class);
+        startService(intent);
         setupJazziness(JazzyViewPager.TransitionEffect.Tablet);
 
     }
@@ -78,12 +85,17 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        mFloatingBackgroundView.turnOff();
+        Intent intent = new Intent();
+        intent.setAction(BackGroundService.BROADCAST_TURN_OFF_BACKGROUND);
+        sendBroadcast(intent);
 
     }
 
     protected void onDestroy(){
         super.onDestroy();
+        Intent intent = new Intent();
+        intent.setClass(this, BackGroundService.class);
+        stopService(intent);
     }
 
 }
